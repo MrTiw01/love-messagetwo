@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>เว็บบอกรักแฟน</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            color: #fff; /* เปลี่ยนข้อความเป็นสีขาวเพื่อให้มองเห็นชัดเจนขึ้น */
+            text-align: center;
+            margin: 0;
+            height: 100vh; /* ให้ครอบคลุมความสูงของหน้าจอ */
+            overflow: hidden; /* ไม่ให้มีสกอร์ลล์ */
+            position: relative; /* ทำให้วิดีโออยู่ด้านหลัง */
+        }
+        video {
+            position: absolute; /* ทำให้วิดีโออยู่ด้านหลัง */
+            top: 0; /* เริ่มต้นจากด้านบน */
+            left: 0; /* เริ่มต้นจากด้านซ้าย */
+            width: 100vw; /* ให้กว้างเต็มพื้นที่วิว */
+            height: 100vh; /* ให้สูงเต็มพื้นที่วิว */
+            object-fit: cover; /* ปรับขนาดวิดีโอให้พอดีกับหน้าจอ */
+            z-index: -1; /* ทำให้วิดีโออยู่ด้านหลังเนื้อหา */
+        }
+        h1, p {
+            position: relative; /* ทำให้ข้อความอยู่เหนือวิดีโอ */
+            z-index: 1; /* ทำให้ข้อความอยู่เหนือวิดีโอ */
+        }
+        h1 {
+            color: #ff1493;
+            margin-top: 20px;
+        }
+        p {
+            font-size: 20px;
+        }
+        .heart {
+            font-size: 50px;
+            color: red;
+            display: none; /* ซ่อนรูปหัวใจตามค่าเริ่มต้น */
+            z-index: 1; /* ทำให้หัวใจอยู่เหนือวิดีโอ */
+            margin-top: 20px;
+        }
+        .slider {
+            position: relative;
+            max-width: 300px; /* จำกัดความกว้างของสไลเดอร์ */
+            margin: auto;
+            overflow: hidden;
+            z-index: 1; /* ทำให้สไลเดอร์อยู่เหนือวิดีโอ */
+        }
+        .slides {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+        .slide {
+            min-width: 100%;
+        }
+        img {
+            width: 100%; /* ให้ภาพกว้างเต็มพื้นที่สไลเดอร์ */
+            max-width: 300px; /* จำกัดความกว้างสูงสุดของภาพให้เล็กลง */
+            max-height: 200px; /* จำกัดความสูงสูงสุดของภาพ */
+            height: auto; /* ปรับความสูงอัตโนมัติเพื่อรักษาสัดส่วน */
+            border-radius: 10px;
+            object-fit: cover; /* ให้ภาพพอดีกับพื้นที่ที่กำหนด */
+        }
+        audio {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <video autoplay loop muted>
+        <source src="your_music_file.mp4" type="video/mp4"> <!-- แทนที่ด้วยไฟล์วิดีโอของคุณ -->
+        Your browser does not support the video tag.
+    </video>
+
+    <h1>For You Ploy</h1>
+    <p>สวัสดีที่รัก!<br>
+    I love you more than words can say❤️</p>
+    <div class="heart" id="heart">💞รักที่สุด!!!💞</div> <!-- เพิ่ม ID ให้กับหัวใจ -->
+    <p>ขอบคุณที่อยู่เคียงข้างกันเสมอ!</p>
+    
+    <div class="slider">
+        <div class="slides">
+            <div class="slide"><img src="image1.jpg" alt="ภาพที่ 1"></div>
+            <div class="slide"><img src="image2.jpg" alt="ภาพที่ 2"></div>
+            <div class="slide"><img src="image3.jpg" alt="ภาพที่ 3"></div>
+            <div class="slide"><img src="image4.jpg" alt="ภาพที่ 4"></div>
+            <div class="slide"><img src="image5.jpg" alt="ภาพที่ 5"></div>
+        </div>
+    </div>
+
+    <audio controls id="audio" autoplay loop muted>
+        <source src="your_music_file.mp3" type="audio/mpeg"> <!-- แทนที่ด้วยไฟล์เพลงของคุณ -->
+        Your browser does not support the audio element.
+    </audio>
+
+    <script>
+        let currentIndex = 0;
+        const slides = document.querySelector('.slides');
+        const totalSlides = document.querySelectorAll('.slide').length;
+        const audio = document.getElementById('audio');
+        const heart = document.getElementById('heart');
+
+        function showSlide(index) {
+            const offset = -index * 100; // 100% per slide
+            slides.style.transform = `translateX(${offset}%)`;
+        }
+
+        setInterval(() => {
+            currentIndex = (currentIndex + 1) % totalSlides; // Loop back to first slide
+            showSlide(currentIndex);
+        }, 3000); // Change slide every 3 seconds
+
+        // แสดงหัวใจเมื่อเพลงเริ่มเล่น
+        audio.addEventListener('play', () => {
+            heart.style.display = 'block'; // แสดงหัวใจ
+        });
+
+        audio.addEventListener('pause', () => {
+            heart.style.display = 'none'; // ซ่อนหัวใจเมื่อเพลงหยุด
+        });
+
+        audio.addEventListener('ended', () => {
+            heart.style.display = 'none'; // ซ่อนหัวใจเมื่อเพลงจบ
+        });
+    </script>
+</body>
+</html>
